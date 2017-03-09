@@ -11,7 +11,5 @@ class system::schedules (
       create_resources(schedule, $hiera_config, $defaults)
     }
   }
-  schedule { 'always':
-    range => '0 - 23',
-  }
+  schedule { 'always': }
 }
