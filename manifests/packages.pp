@@ -2,17 +2,43 @@ class system::packages (
   $config   = undef,
   $sys_schedule = 'always',
 ) {
+
+  define extended_package (
+    $ensure = 'installed',
+    $schedule = $sys_schedule,
+    $before = [],
+    $require = [],
+    $notify = [],
+  ) {
+    if $ensure == 'removed' {
+      exec {"remove $title":
+        command => "yum -y -q remove $title",
+        before => Package["$title"],
+        require => $require,
+      }
+      package {"$title":
+        ensure => absent,
+        before => $before,
+        notify => $notify,
+      }
+    } else {
+      package {"$title":
+        ensure => $ensure,
+        before => $before,
+        require => $require,
+        notify => $notify,
+      }
+    }
+  }
+
   $defaults = {
     ensure   => 'installed',
     schedule => $sys_schedule,
   }
   if $config {
     create_resources(package, $config, $defaults)
-  }
-  else {
-    $hiera_config = hiera_hash('system::packages', undef)
-    if $hiera_config {
-      create_resources(package, $hiera_config, $defaults)
-    }
+  } else {
+    $hiera_config = hiera_hash('system::packages', {})
+    create_resources(extended_package, $hiera_config )
   }
 }
