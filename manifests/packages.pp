@@ -12,10 +12,10 @@ class system::packages (
   ) {
     if $ensure == 'removed' {
       exec {"remove $title":
-        command => "yum -y -q remove $title",
+        command => "/usr/bin/yum -y -q remove $title",
         before => Package["$title"],
         require => $require,
-        onlyif => "rpm --quiet -q $title",
+        onlyif => "/bin/rpm --quiet -q $title",
       }
       package {"$title":
         ensure => absent,
