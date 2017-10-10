@@ -15,6 +15,7 @@ class system::packages (
         command => "yum -y -q remove $title",
         before => Package["$title"],
         require => $require,
+        onlyif => "rpm --quiet -q $title",
       }
       package {"$title":
         ensure => absent,
