@@ -10,7 +10,7 @@ class system::packages (
     $require = [],
     $notify = [],
   ) {
-    if $ensure == 'removed' {
+    if $ensure == 'removed_along_with_all_dependent_packages' {
       exec {"remove $title":
         command => "/usr/bin/yum -y -q remove $title",
         before => Package["$title"],
