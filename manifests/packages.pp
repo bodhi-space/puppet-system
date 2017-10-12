@@ -9,6 +9,10 @@ class system::packages (
     $before = [],
     $require = [],
     $notify = [],
+    $install_options = [],
+    $uninstall_options = [],
+    $provider = 'yum',
+    $source = undef,
   ) {
     if $ensure == 'removed_along_with_all_dependent_packages' {
       exec {"remove $title":
@@ -28,6 +32,10 @@ class system::packages (
         before => $before,
         require => $require,
         notify => $notify,
+        install_options => $install_options,
+        uninstall_options => $uninstall_options,
+        provider => $provider,
+        source => $source,
       }
     }
   }
