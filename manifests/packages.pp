@@ -25,6 +25,15 @@ class system::packages (
         ensure => absent,
         before => $before,
         notify => $notify,
+        onlyif => "/bin/rpm --quiet -q $title",
+      }
+    } elsif $ensure =~ /^(absent|purged)$/ {
+      package {"$title":
+        ensure => $ensure,
+        before => $before,
+        notify => $notify,
+        require => $require,
+        onlyif => "/bin/rpm --quiet -q $title",
       }
     } else {
       package {"$title":
