@@ -34,6 +34,8 @@ class system::packages (
         notify => $notify,
         require => $require,
         onlyif => "/bin/rpm --quiet -q $title",
+        uninstall_options => $uninstall_options,
+        provider => $provider,
       }
     } else {
       package {"$title":
@@ -42,7 +44,6 @@ class system::packages (
         require => $require,
         notify => $notify,
         install_options => $install_options,
-        uninstall_options => $uninstall_options,
         provider => $provider,
         source => $source,
       }
