@@ -14,28 +14,23 @@ class system::packages (
     $provider = 'yum',
     $source = undef,
   ) {
-    if $ensure == 'removed_along_with_all_dependent_packages' {
-      exec {"remove $title":
-        command => "/usr/bin/yum -y -q remove $title",
-        before => Package["$title"],
-        require => $require,
-        onlyif => "/bin/rpm --quiet -q $title",
-      }
-      package {"$title":
-        ensure => absent,
-        before => $before,
-        notify => $notify,
-        onlyif => "/bin/rpm --quiet -q $title",
-      }
-    } elsif $ensure =~ /^(absent|purged)$/ {
-      package {"$title":
-        ensure => $ensure,
-        before => $before,
-        notify => $notify,
-        require => $require,
-        onlyif => "/bin/rpm --quiet -q $title",
-        uninstall_options => $uninstall_options,
-        provider => $provider,
+    if $ensure =~ /^removed/ {
+      if $ensure == 'removed_along_with_all_dependent_packages' {
+        exec {"removed $title":
+          command => "/usr/bin/yum -y -q remove $title",
+          require => $require,
+          before => $before,
+          notify => $notify,
+          onlyif => "/bin/rpm --quiet -q $title",
+        }
+      } else {
+        exec {"removed $title":
+          command => "/bin/rpm -e $title",
+          require => $require,
+          before => $before,
+          notify => $notify,
+          onlyif => "/bin/rpm --quiet -q $title",
+        }
       }
     } else {
       package {"$title":
@@ -44,6 +39,7 @@ class system::packages (
         require => $require,
         notify => $notify,
         install_options => $install_options,
+        uninstall_options => $uninstall_options,
         provider => $provider,
         source => $source,
       }
