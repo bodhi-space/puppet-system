@@ -1,7 +1,7 @@
 class system::sshd (
   $config   = undef,
   $sys_schedule = 'always',
-  $sync_host_keys = true
+  $sync_host_keys = false
 ) {
   $defaults = {
     schedule => $sys_schedule,
