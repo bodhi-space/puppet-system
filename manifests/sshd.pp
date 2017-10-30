@@ -17,21 +17,23 @@ class system::sshd (
       create_resources(sshd_config, $hiera_config, $defaults)
     }
   }
-  if $sync_host_keys {
-    # From: http://docs.puppetlabs.com/guides/exported_resources.html
-    # and https://wiki.xkyle.com/Managing_SSH_Keys_With_Puppet
+  # Deprecated config removed to clean-up storeconfig warnings (INFRA-5707)
+  # 
+  # if $sync_host_keys {
+  #   # From: http://docs.puppetlabs.com/guides/exported_resources.html
+  #   # and https://wiki.xkyle.com/Managing_SSH_Keys_With_Puppet
 
-    # export host key
-    $hostonly = regsubst($::fqdn, "\.${::domain}$", '')
-    $host_aliases = [ $::ipaddress, $hostonly ]
-    @@sshkey { $::fqdn:
-      ensure       => present,
-      host_aliases => $host_aliases,
-      type         => 'rsa',
-      key          => $::sshrsakey,
-    }
+  #   # export host key
+  #   $hostonly = regsubst($::fqdn, "\.${::domain}$", '')
+  #   $host_aliases = [ $::ipaddress, $hostonly ]
+  #   @@sshkey { $::fqdn:
+  #     ensure       => present,
+  #     host_aliases => $host_aliases,
+  #     type         => 'rsa',
+  #     key          => $::sshrsakey,
+  #   }
 
-    # import all other host keys
-    Sshkey <<| |>>
-  }
+  #   # import all other host keys
+  #   Sshkey <<| |>>
+  # }
 }
