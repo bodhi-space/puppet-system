@@ -31,7 +31,7 @@ class system (
 
   class { '::system::execs':
     config => $config['execs'],
-    stage  => last,
+#    stage  => last,
   }
 
   class { '::system::facts':
@@ -40,17 +40,17 @@ class system (
 
   class { '::system::files':
     config => $config['files'],
-    stage  => third,
+#    stage  => third,
   }
 
   class { '::system::groups':
     config => $config['groups'],
-    stage  => second
+#    stage  => second
   }
 
   class { '::system::groups::realize':
     groups  => $config['realize_groups'],
-    stage   => second,
+#    stage   => second,
     require => Class['::system::groups'],
   }
 
@@ -68,7 +68,7 @@ class system (
 
   class { '::system::mounts':
     config => $config['mounts'],
-    stage  => last,
+#    stage  => last,
   }
 
   include '::system::network'
@@ -79,18 +79,18 @@ class system (
 
   class { '::system::packages':
     config  => $config['packages'],
-    stage   => second,
+#    stage   => second,
     require => Class['::system::yumgroups'],
   }
 
   class { '::system::schedules':
     config => $config['schedules'],
-    stage  => first,
+#    stage  => first,
   }
 
   class { '::system::selbooleans':
     config => $config['selbooleans'],
-    stage  => first,
+#    stage  => first,
   }
 
   class { '::system::services':
@@ -111,24 +111,24 @@ class system (
 
   class { '::system::templates':
     config => $config['templates'],
-    stage  => last,
+#    stage  => last,
   }
 
   class { '::system::users':
     config  => $config['users'],
-    stage   => second,
+#    stage   => second,
     require => Class['::system::groups'],
   }
 
   class { '::system::users::realize':
     users   => $config['realize_users'],
-    stage   => second,
+#    stage   => second,
     require => Class['::system::users', '::system::groups::realize'],
   }
 
   class { '::system::yumgroups':
     config => $config['yumgroups'],
-    stage  => second,
+#    stage  => second,
   }
 
   class { '::system::yumrepos':
