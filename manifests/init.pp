@@ -134,7 +134,7 @@ class system (
   class { '::system::yumrepos':
     config  => $config['yumrepos'],
     stage   => first,
-    require => Class['::system::schedules'],
+#    require => Class['::system::schedules'],
   }
 
   class { '::system::providers':
